@@ -3,7 +3,7 @@
 $dbip='127.0.0.1';
 $dbuser='root';
 $dbpasswd='qazxsw';
-$dbname='movie002';
+$dbname='yingshi';
 
 date_default_timezone_set ('Asia/Shanghai');
 

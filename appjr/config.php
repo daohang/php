@@ -3,7 +3,7 @@
 $dbip='127.0.0.1';
 $dbuser='root';
 $dbpasswd='qazxsw';
-$dbname='movie002';
+$dbname='jr';
 
 date_default_timezone_set ('Asia/Shanghai');
 
@@ -20,10 +20,10 @@ $pagecount=15;
 //$DH_dh_path= '/srv/dh/';
 //$DH_home_url= 'http://v.movie002.com';
 
-//$DH_output_path= $_SERVER['DOCUMENT_ROOT'] . '/v/';
-//$DH_input_path= $_SERVER['DOCUMENT_ROOT'] . '/php/';
-//$DH_dh_path= $_SERVER['DOCUMENT_ROOT'] . '/dh/';
-//$DH_home_url= 'http://s.x2y4.com/';
+$DH_output_path= $_SERVER['DOCUMENT_ROOT'] . '/dk/';
+$DH_input_path= $_SERVER['DOCUMENT_ROOT'] . '/php/';
+$DH_dh_path= $_SERVER['DOCUMENT_ROOT'] . '/dh/';
+$DH_home_url= 'http://s.x2y4.com/';
 //
 //
 //
