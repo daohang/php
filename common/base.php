@@ -181,6 +181,29 @@ function getrealtime($timebuf)
 	return $timetobe;
 }
 
+function getrealdate($timebuf)
+{
+	$timerealyear = formatyear($timebuf);
+	$timerealdate = formatdate($timebuf);
+	//判断date是否符合要求
+    	preg_match('/([0-9]+)\-([0-9]+)/s',$timerealdate,$match);
+	print_r($match);
+	if($match[1]>13 || $match[1]<1)
+		return false;
+	if($match[2]>31 || $match[2]<1)
+		return false;
+	
+	$timereal = $timerealyear."-".$timerealdate;
+	echo $timereal;
+	$timetobe = date("Y-m-d",strtotime($timereal));
+
+	$datenow = date("Y-m-d",strtotime("+1 day"));
+	//$datenow = date("Y-m-d");
+	if($timetobe > $datenow)
+		return $datenow;
+	return $timetobe;
+}
+
 function formatyear($timebuf)
 {
 	preg_match('/(20[0-9]{2})[\-年]/us',$timebuf,$match);
@@ -209,7 +232,14 @@ function formatdate($timebuf)
         return $match[1];
     }
 
-    preg_match('/([0-9]+)月([0-9]+)日/us',$timebuf,$match1);
+    preg_match('/(([0-9]+)\.([0-9]+))/s',$timebuf,$match);
+	print_r($match);
+    if(!empty($match[1]))
+    {
+        return $match[2].'-'.$match[3];
+    }
+
+    preg_match('/([0-9]+)月([0-9]+)[日|号]/us',$timebuf,$match1);
 	//print_r($match1);
     if(!empty($match1[1]))
     {

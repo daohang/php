@@ -1,7 +1,8 @@
 <?php
 require("../config.php");
-require("../common/base.php");
-require("../common/dbaction.php");
+require("../dbaction.php");
+require("../../common/base.php");
+require("../../common/dbaction.php");
 require("x11.php");
 require("common.php");
 
@@ -17,7 +18,8 @@ mysql_close($conn);
 
 function getonlylink()
 {
-	$sql="select l.*,a.* from onlylink l,author a where l.author=a.name and l.fail<3 ";
+	//$sql="select l.*,a.* from onlylink l,author a where l.author=a.name and l.fail<300 ";
+	$sql="select l.*,a.* from onlylink l,author a where l.author=a.name and l.fail<300 ";
 	if( isset($_REQUEST['d']))
 	{
 		$d = $_REQUEST['d'];
@@ -30,10 +32,6 @@ function getonlylink()
 		$a = $_REQUEST['a'];
 		$sql .= " and a.name = '$a'";
 	}
-	if(!isset($_REQUEST['all']))
-	{
-		$sql .= " and mtitle is null";
-	}
 	
 	//$sql .=' limit 0,200';
 	
@@ -44,30 +42,23 @@ function getonlylink()
 	while($row = mysql_fetch_array($results))
 	{
 		//print_r($row);
-		echo "\n".$i.":";
+		echo "</br>\n".$i.":";
 		$i++;
-		if(getlinkmeta($row,$linkway,$linktype,$linkquality,$linkdownway,$linkvalue,$row['link'],$row['title'],$row['cat'])==-1)
-        {
-            echo 'get linkmeta error!</br>';
-            setfail($row);
-            continue; 
-        }
-		echo "\n".$row['title'];
-		if($movieall = getmoviemeta($row,$mtitle,$moviecountry,$movieyear,$movietype,$row['link'],$row['title'],$row['cat'])==-1)
+		echo $row['title'].'/'.$row['ctitle']."</br>\n";
+		$mtitle=testtitle($row['ctitle'],$row['title']);
+		if($mtitle<0)
 		{
-			echo "movietype and country and year not right % cmovietype=".$row['cmovietype']." cmoviecountry=".$row['cmoviecountry']." mtitle=".$mtitle." ->  error 失败，请查明原因！</br> \n";
-			setfail($row);
+			echo "mtitle not right % ctitle=".$row['ctitle']." mtitle=".$mtitle." error 失败，请查明原因！</br> \n";
+			setfail('onlylink',$row['link']);
 			continue;
 		}
-		echo "\n -->".$mtitle;
-		updateonlylink($row['author'],$row['title'],$row['link'],$row['cat'],$row['updatetime'],$mtitle,$moviecountry,$movieyear,$movietype);
-	}
-}
+		if($mtitle===0)
+		{
+			echo "没有设置mtitle</br> \n";
+			continue;
+		}
 
-function setfail($row)
-{
-	echo " no get onlylink set fail ++ ";
-	$sqlupdate = "update onlylink set fail = fail+1 where link = '".$row['link']."'" ;
-	dh_mysql_query($sqlupdate);	
+		updateonlylink($row['link'],$mtitle);
+	}
 }
 ?>

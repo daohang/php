@@ -2,9 +2,10 @@
 // 将onlylink中找出pageid之后，插入link表
 //	从数据库查找pageid
 //	匹配系数为1，开始的匹配系数较高，防止匹配出错
-require("../config.php");
-require("../common/compare.php");
-require("../common/dbaction.php");
+require("../../config.php");
+require("../../dbaction.php");
+require("../../common/compare.php");
+require("../../common/dbaction.php");
 require("common.php");
 
 header('Content-Type:text/html;charset= UTF-8'); 
@@ -39,7 +40,7 @@ function getlink()
 	while($row = mysql_fetch_array($results))
 	{
 		$count++;
-		echo "\n".$count.": ".$row['title'].': '.$row['link'].': '.$row['cat'].' --> '.$row['movietype'].'/'.$row['moviecountry'].'/'.$row['movieyear'];
+		echo "\n".$count.": ".$row['title'].': '.$row['link'].': '.$row['cat'];
 		$maxrate=1;
 		$pageid = getdbpageid($row['title'],$row['mtitle'],$row['moviecountry'],$row['movieyear'],$row['movietype'],$maxrate);
 		if($pageid>=0)

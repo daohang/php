@@ -117,4 +117,24 @@ function getImage($url,$filepath='',$filename='')
 	return $filename;
 }
 
+function geturljsjump($baseurl,$trueurl,$authorname,$level)
+{
+	if($level>4)
+		return false;
+	$buff = geturl($trueurl,$authorname);
+	if(!$buff)
+		return false;
+	//print_r($buff);	
+	//判断是否有页面跳转			
+	preg_match('/<script>.*?self\.location="(.*?)".*?<\/script>/is',$buff,$match);
+	//print_r($match);
+	if(!empty($match[1]))
+	{
+		sleep(1);
+		$newurl=getnewurl($baseurl,$match[1]);
+		echo $newurl."\n";
+		$buff = geturljsjump($baseurl,$trueurl,$authorname,$level+1);
+	}
+	return $buff;
+}
 ?>

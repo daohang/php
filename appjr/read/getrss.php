@@ -1,5 +1,6 @@
 <?php
 require("../config.php");
+require("../dbaction.php");
 require("../../common/curl.php");
 require("../../common/base.php");
 require("../../common/dbaction.php");
@@ -37,7 +38,7 @@ function all()
 		while($row = mysql_fetch_array($results))
 		{
 			//打开rss地址，并读取，读取失败则中止
-			echo "\n".$row['id'].' -- '.$row['name'].'的全部文章:'.$row['rssurl']."</br>\n";
+			echo "</br>\n".$row['id'].' -- '.$row['name'].'的全部文章:'.$row['rssurl']."</br>\n";
 			$rssinfo->author=$row['name'];
 			$lastupdate=$row['updatetime'];			
 			$buff = geturl($row['rssurl'],$row['name']);
